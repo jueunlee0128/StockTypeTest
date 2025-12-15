@@ -428,6 +428,7 @@ body {
     text-align: center;
     padding: 20px;
     line-height: 1.4;
+    white-space: pre-line;
 }
 
 .advice-section {

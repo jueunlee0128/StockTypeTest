@@ -198,32 +198,29 @@ function showResult() {
         bar5Right.style.width = bar5RightWidth;
     }, 1000);
     
-    // 특징 표시 (상위 3개 유형)
-    const sortedScores = Object.entries(scores)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 3);
-    
+    // 투자 유형 특징 표시
     const charCircles = document.getElementById('charCircles');
     charCircles.innerHTML = '';
     
-    const characteristics = {
-        안정형: '뉴스,\n실적 중시',
-        균형형: '느리더라도\n꾸준한 수익 선호',
-        공격형: '손실을\n싫어함',
-        장기형: '좋은 기업\n오래 보유',
-        단타형: '빠른 매매로\n수익',
-        감정형: '분위기에\n영향받음',
-        분석형: '데이터\n중심 투자'
+    const typeCharacteristics = {
+        안정형: ['손실을\n싫어함', '느리더라도\n꾸준한 수익 선호', '좋은 기업이면\n오래 보유'],
+        균형형: ['리스크와\n수익의 균형', '분산투자\n선호', '상황 따라\n유연함'],
+        공격형: ['높은 수익\n가능성이 최우선', '변동성\nOK', '단기 투자,\n테마주 관심'],
+        장기형: ['좋은 기업이면\n오래 보유', '단기 등락에\n둔감', '미래 성장성\n중시'],
+        단타형: ['결과에\n민감', '빠른 매수,\n매도', '즉각적인\n결정으로 투자'],
+        감정형: ['분위기,\n주변 말에\n영향 받음', '급등하면 사고\n급락하면 불안', '좋은 기회를\n놓칠까봐 두려움'],
+        분석형: ['숫자, 데이터,\n재무제표 등을\n분석함', '논리적 근거에\n따라 투자함', '충동적인\n투자 안함']
     };
     
-    sortedScores.forEach(([type, score]) => {
-        if (score > 0) {
+    const features = typeCharacteristics[resultType];
+    if (features) {
+        features.forEach(feature => {
             const circle = document.createElement('div');
             circle.className = 'char-circle';
-            circle.textContent = characteristics[type] || investorTypes[type].subtitle;
+            circle.textContent = feature;
             charCircles.appendChild(circle);
-        }
-    });
+        });
+    }
     
     // SUMMIT 조언 표시
     const adviceTexts = {
@@ -341,4 +338,3 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-

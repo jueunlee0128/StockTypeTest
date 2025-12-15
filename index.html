@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUMMIT 투자 유형 테스트</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 시작 화면 -->
+    <div id="startScreen" class="screen active">
+        <div class="header">
+            <div class="logo">
+                <img src="\images\SUMMIT.png" alt="주식 아이콘" class="logo-icon">
+                <span>SUMMIT</span> 
+            </div>
+            <span class="header-text">투자 유형 TEST</span>
+            <span class="header-text header-text-right">#비즈쿨페스티벌</span>
+            <img src="\images\Search_white.png" alt="검색" class="search-icon">
+        </div>
+
+        <div class="container">
+            <button class="start-button" id="startBtn">START</button>
+        </div>
+    </div>
+
+    <!-- 질문 화면들 -->
+    <div id="questionScreens"></div>
+
+    <!-- 결과 화면 -->
+    <div id="resultScreen" class="screen">
+        <div class="result-container">
+            <div class="result-main-type">
+                <div class="check-icon">✓</div>
+                <div class="main-type-info">
+                    <h1 id="resultType" class="result-type"></h1>
+                    <p id="resultSubtitle" class="result-subtitle"></p>
+                </div>
+            </div>
+
+            <h3 class="score-title">나의 투자 성향 분석</h3>
+            
+            <div class="score-bars">
+                <div class="score-row">
+                    <span class="score-label">보수</span>
+                    <div class="score-bar-container">
+                        <div class="score-bar score-bar-left" id="scoreBar1Left"></div>
+                        <div class="score-bar score-bar-right" id="scoreBar1Right"></div>
+                    </div>
+                    <span class="score-label">공격</span>
+                </div>
+                <div class="score-row">
+                    <span class="score-label">단기</span>
+                    <div class="score-bar-container">
+                        <div class="score-bar score-bar-left" id="scoreBar2Left"></div>
+                        <div class="score-bar score-bar-right" id="scoreBar2Right"></div>
+                    </div>
+                    <span class="score-label">장기</span>
+                </div>
+                <div class="score-row">
+                    <span class="score-label">감정</span>
+                    <div class="score-bar-container">
+                        <div class="score-bar score-bar-left" id="scoreBar3Left"></div>
+                        <div class="score-bar score-bar-right" id="scoreBar3Right"></div>
+                    </div>
+                    <span class="score-label">논리</span>
+                </div>
+                <div class="score-row">
+                    <span class="score-label">즉흥</span>
+                    <div class="score-bar-container">
+                        <div class="score-bar score-bar-left" id="scoreBar4Left"></div>
+                        <div class="score-bar score-bar-right" id="scoreBar4Right"></div>
+                    </div>
+                    <span class="score-label">계획</span>
+                </div>
+                <div class="score-row">
+                    <span class="score-label">집중</span>
+                    <div class="score-bar-container">
+                        <div class="score-bar score-bar-left" id="scoreBar5Left"></div>
+                        <div class="score-bar score-bar-right" id="scoreBar5Right"></div>
+                    </div>
+                    <span class="score-label">분산</span>
+                </div>
+            </div>
+
+            <div class="characteristics">
+                <h3 class="char-title">내 투자의 특징</h3>
+                <div class="char-circles" id="charCircles">
+                    <!-- 특징들이 동적으로 추가됩니다 -->
+                </div>
+            </div>
+
+            <button class="start-button" id="restartBtn">다시 테스트하기</button>
+        </div>
+    </div>
+
+    <!-- 결과 화면 헤더 (별도로 고정) -->
+    <div class="question-header" id="resultHeader" style="display: none;">
+        <div class="logo-small">
+            <img src="\images\SUMMIT.png" alt="주식 아이콘" class="logo-icon-small" id="logoBtn2">
+        </div>
+        <h2 class="question-title">내 투자 유형은?</h2>
+        <img src="\images\Search_white.png" alt="검색" class="search-icon-small">
+    </div>
+
+    <script src="quiz-data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

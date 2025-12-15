@@ -64,7 +64,7 @@ function createQuestionScreens() {
                     <button class="answer-btn" data-answer="${i}">${answer.text}</button>
                 `).join('')}
             </div>
-            ${q.id === 1 ? '<div class="footer-info"><p class="info-text">*ETF : 특정 지수 및 특정자산의 가격 움직임과 수익률이 연동되도록 설계된 펀드로<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;거래소에 상장되어 주식처럼 거래가 가능한 증권</p></div>' : ''}
+            ${q.id === 1 ? '<div class="footer-info"><p class="info-text">*ETF : 특정자산의 가격과 수익률이 연동되도록 설계된 펀드로 거래소에 상장되어 주식처럼 거래가 가능한 증권</p></div>' : ''}
         `;
         
         container.appendChild(screen);
@@ -341,3 +341,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+

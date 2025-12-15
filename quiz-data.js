@@ -121,7 +121,7 @@ const questions = [
     },
     {
         id: 9,
-        question: "처음 보는 유망한 종목을 발견했다면?",
+        question: "처음 보는 종목을 발견했다면?",
         answers: [
             { text: "바로 기업 정보와 재무제표를 탐색한다", scores: { 분석형: 2 } },
             { text: "일단 관심 목록에만 추가해둔다", scores: { 안정형: 2 } },
@@ -140,4 +140,3 @@ const questions = [
         ]
     }
 ];
-

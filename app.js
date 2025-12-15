@@ -196,6 +196,37 @@ function showResult() {
         bar4Right.style.width = bar4RightWidth;
         bar5Left.style.width = bar5LeftWidth;
         bar5Right.style.width = bar5RightWidth;
+        
+        // 낮은 점수 라벨에 투명도 적용
+        if (axisScores.보수 < axisScores.공격) {
+            document.getElementById('label1Left').classList.add('low-score');
+        } else if (axisScores.보수 > axisScores.공격) {
+            document.getElementById('label1Right').classList.add('low-score');
+        }
+        
+        if (axisScores.단기 < axisScores.장기) {
+            document.getElementById('label2Left').classList.add('low-score');
+        } else if (axisScores.단기 > axisScores.장기) {
+            document.getElementById('label2Right').classList.add('low-score');
+        }
+        
+        if (axisScores.감정 < axisScores.논리) {
+            document.getElementById('label3Left').classList.add('low-score');
+        } else if (axisScores.감정 > axisScores.논리) {
+            document.getElementById('label3Right').classList.add('low-score');
+        }
+        
+        if (axisScores.즉흥 < axisScores.계획) {
+            document.getElementById('label4Left').classList.add('low-score');
+        } else if (axisScores.즉흥 > axisScores.계획) {
+            document.getElementById('label4Right').classList.add('low-score');
+        }
+        
+        if (axisScores.집중 < axisScores.분산) {
+            document.getElementById('label5Left').classList.add('low-score');
+        } else if (axisScores.집중 > axisScores.분산) {
+            document.getElementById('label5Right').classList.add('low-score');
+        }
     }, 1000);
     
     // 투자 유형 특징 표시

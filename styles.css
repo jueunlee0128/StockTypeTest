@@ -348,6 +348,11 @@ body {
     font-size: 18px;
     min-width: 50px;
     text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+.score-label.low-score {
+    opacity: 0.5;
 }
 
 .score-bar-container {

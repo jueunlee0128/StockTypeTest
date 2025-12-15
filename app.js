@@ -53,10 +53,10 @@ function createQuestionScreens() {
         screen.innerHTML = `
             <div class="question-header">
                 <div class="logo-small">
-                    <img src="\\images\\SUMMIT.png" alt="주식 아이콘" class="logo-icon-small logo-btn">
+                    <img src="SUMMIT.png" alt="주식 아이콘" class="logo-icon-small logo-btn">
                 </div>
                 <h2 class="question-title">Q${q.id}. ${q.question}</h2>
-                <img src="\\images\\Search_white.png" alt="검색" class="search-icon-small">
+                <img src="Search_white.png" alt="검색" class="search-icon-small">
             </div>
 
             <div class="question-container">

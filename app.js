@@ -240,9 +240,11 @@ function resetTest() {
     };
     currentQuestion = 0;
     
-    const resultScreen = document.getElementById('resultScreen');
+    const currentScreen = document.querySelector('.screen.active');
     const startScreen = document.getElementById('startScreen');
-    transitionToScreen(resultScreen, startScreen);
+    if (currentScreen && currentScreen !== startScreen) {
+        transitionToScreen(currentScreen, startScreen);
+    }
 }
 
 // 초기화
@@ -269,15 +271,33 @@ document.addEventListener('DOMContentLoaded', function() {
         this.click();
     });
     
+    // 모달 관련 이벤트
+    const modal = document.getElementById('confirmModal');
+    const modalCancel = document.getElementById('modalCancel');
+    const modalConfirm = document.getElementById('modalConfirm');
+    
+    function showModal() {
+        modal.style.display = 'flex';
+    }
+    
+    function hideModal() {
+        modal.style.display = 'none';
+    }
+    
+    modalCancel.addEventListener('click', hideModal);
+    
+    modalConfirm.addEventListener('click', function() {
+        hideModal();
+        resetTest();
+    });
+    
     // 로고 클릭 이벤트 (모든 로고에 적용)
     document.addEventListener('click', function(e) {
         if (e.target.classList.contains('logo-icon-small') || e.target.classList.contains('logo-btn')) {
             const startScreen = document.getElementById('startScreen');
             const currentScreen = document.querySelector('.screen.active');
             if (currentScreen !== startScreen) {
-                if (confirm('테스트를 처음부터 다시 시작하시겠습니까?')) {
-                    resetTest();
-                }
+                showModal();
             }
         }
     });
@@ -303,9 +323,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoBtn2 = document.getElementById('logoBtn2');
     if (logoBtn2) {
         logoBtn2.addEventListener('click', function() {
-            if (confirm('테스트를 처음부터 다시 시작하시겠습니까?')) {
-                resetTest();
-            }
+            showModal();
         });
     }
 });

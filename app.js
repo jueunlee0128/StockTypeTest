@@ -64,6 +64,7 @@ function createQuestionScreens() {
                     <button class="answer-btn" data-answer="${i}">${answer.text}</button>
                 `).join('')}
             </div>
+            ${q.id === 1 ? '<div class="footer-info"><p class="info-text">*ETF : 특정 지수 및 특정자산의 가격 움직임과 수익률이 연동되도록 설계된 펀드로<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;거래소에 상장되어 주식처럼 거래가 가능한 증권</p></div>' : ''}
         `;
         
         container.appendChild(screen);
@@ -223,6 +224,19 @@ function showResult() {
             charCircles.appendChild(circle);
         }
     });
+    
+    // SUMMIT 조언 표시
+    const adviceTexts = {
+        안정형: '과도한 회피로 기회를 놓치지 않도록 분산 전략을 유지하세요.',
+        균형형: '기준을 명확히 하여 균형을 맞추면 흔들림이 더 줄어들 거예요.',
+        공격형: '높은 변동성을 감수하는 만큼, 명확한 손절 기준으로 리스크를 통제하세요.',
+        장기형: '장기 투자의 힘을 믿되, 정기적인 포트폴리오 점검으로 방향성을 확인하세요.',
+        단타형: '빠른 매매만큼 거래 비용과 감정 개입을 최소화하는 전략이 중요합니다.',
+        감정형: '시장 분위기보다 사전에 정한 기준에 따라 의사결정을 내리는 연습을 해보세요.',
+        분석형: '철저한 분석을 강점으로 삼되, 과도한 정보 탐색으로 타이밍을 놓치지 않도록 하세요.'
+    };
+    
+    document.getElementById('adviceText').textContent = adviceTexts[resultType] || '투자는 꾸준함이 핵심입니다.';
     
     transitionToScreen(currentScreen, resultScreen);
 }

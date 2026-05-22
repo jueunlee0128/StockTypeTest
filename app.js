@@ -3,13 +3,158 @@ let scores = {
     안정형: 0,
     균형형: 0,
     공격형: 0,
+    즉흥형: 0,
     장기형: 0,
     단타형: 0,
     감정형: 0,
-    분석형: 0
+    분석형: 0,
+    집중형: 0,
+    단기형: 0,
+    논리형: 0,
+    계획형: 0,
+    분산형: 0,
+    보수형: 0,
+    중립형: 0,
 };
 
 let currentQuestion = 0;
+
+// 스토리 스크립트
+const storyScript = [
+    { 
+        speaker: "나레이션",
+        line: "2027년, 대한민국은 투자에 미쳐버렸다.",
+        images: [
+            { src: "images/ThirdImage.png", position: "left", height: "100%", width: "auto", delay: 700},
+            { src: "images/FirstImage.png", position: "right", height: "100%", width: "auto"},
+        ]
+    },
+    { 
+        speaker: "나레이션",
+        line: "교장쌤은 코인 BJ, 영어쌤은 미국 주식 유튜버가 됐다.",
+        images: [
+            { src: "images/bitcoin.png", position: "right", height: "80%", width: "auto", delay: 1000 },
+            { src: "images/Youtube.png", position: "left", height: "80%", width: "auto" }
+        ]
+    },
+    { 
+        speaker: "나레이션", 
+        line: "어느 날, 디미가 소리친다.", 
+        images: [
+            { src: "images/shouting.png", position: "center", height: "80%", width: "auto"}
+        ]
+    },
+    { 
+        speaker: "디미", 
+        line: "야!!!! 이 코인 오늘 700% 간대!!!!",
+        image: { src: "images/Dimi.png", position: "left" }
+    },
+];
+let currentStoryIndex = 0;
+let isTyping = false;
+let typingTimeout;
+let imageTimeoutIds = []; // 이미지 타임아웃 ID 저장 배열
+
+// 질문 후 스토리 스크립트
+const postQuestion1Script = [
+    { 
+        speaker: "나레이션", 
+        line: "📉 주식 -94% (손이 덜덜)",
+        image: { src: "images/FourthImage.png", position: "center", height: "70%", width: "auto" }
+    },
+    { 
+        speaker: "나레이션",
+        line: "디미가 다시 속삭인다.",
+        image: { src: "images/FifthImage.png", position: "center", height: "80%", width: "auto"}
+    },
+    { 
+        speaker: "디미", 
+        line: "야… 지금이 진짜 저점이래… (찡긋★)",
+        image: { src: "images/Image.png", position: "center", height: "80%", width: "auto" }
+    },
+];
+let postQuestionStoryIndex = 0;
+let onPostStoryComplete = null;
+
+// 질문 후 스토리 표시 함수
+function showPostQuestionStory(script, onComplete) {
+    postQuestionStoryIndex = 0; // 인덱스 초기화
+    onPostStoryComplete = onComplete; // 완료 콜백 저장
+    
+    const dialogueBox = document.querySelector('.dialogue-box');
+    
+    // 기존 이벤트 리스너 제거
+    const newDialogueBox = dialogueBox.cloneNode(true);
+    dialogueBox.parentNode.replaceChild(newDialogueBox, dialogueBox);
+
+    // 새 이벤트 리스너 추가
+    newDialogueBox.addEventListener('click', handlePostStoryClick);
+
+    // 첫 대사 시작
+    showNextPostStoryLine(script);
+}
+
+function showNextPostStoryLine(script) {
+    if (postQuestionStoryIndex >= script.length) {
+        if (onPostStoryComplete) {
+            onPostStoryComplete();
+        }
+        // 이벤트 리스너 원래대로 되돌리기
+        const dialogueBox = document.querySelector('.dialogue-box');
+        const newDialogueBox = dialogueBox.cloneNode(true);
+        dialogueBox.parentNode.replaceChild(newDialogueBox, dialogueBox);
+        newDialogueBox.addEventListener('click', handleIntroStoryClick);
+
+        return;
+    }
+
+    const dialogue = script[postQuestionStoryIndex];
+    const dialogueText = document.getElementById('dialogueText');
+    const characterName = document.getElementById('characterName');
+    const imageContainer = document.getElementById('character-images');
+
+    imageContainer.innerHTML = ''; // 이전 이미지/효과 제거
+
+    if (dialogue.image) {
+        const img = document.createElement('img');
+        img.src = dialogue.image.src;
+        img.className = `character-image ${dialogue.image.position}`;
+        if (dialogue.image.width) img.style.width = dialogue.image.width;
+        if (dialogue.image.height) img.style.height = dialogue.image.height;
+        imageContainer.appendChild(img);
+        setTimeout(() => img.classList.add('show'), 10);
+    }
+
+    characterName.innerText = dialogue.speaker;
+    typeWriter(dialogueText, dialogue.line, 50);
+
+    postQuestionStoryIndex++;
+}
+
+function handlePostStoryClick() {
+    const script = postQuestion1Script; // 현재는 고정
+    const currentLine = script[postQuestionStoryIndex - 1].line;
+    const dialogueText = document.getElementById('dialogueText');
+
+    if (isTyping) {
+        skipTyping(dialogueText, currentLine);
+    } else {
+        showNextPostStoryLine(script);
+    }
+}
+
+function handleIntroStoryClick() {
+    if (currentStoryIndex > 0) { // 스토리가 시작된 후에만 작동
+        const currentLine = storyScript[currentStoryIndex - 1].line;
+        const dialogueText = document.getElementById('dialogueText');
+
+        if (isTyping) {
+            skipTyping(dialogueText, currentLine);
+        } else {
+            showNextDialogue();
+        }
+    }
+}
 
 // 화면 전환 함수
 function transitionToScreen(fromScreen, toScreen) {
@@ -64,7 +209,6 @@ function createQuestionScreens() {
                     <button class="answer-btn" data-answer="${i}">${answer.text}</button>
                 `).join('')}
             </div>
-            ${q.id === 1 ? '<div class="footer-info"><p class="info-text">*ETF : 특정자산의 가격과 수익률이 연동되도록 설계된 펀드로 거래소에 상장되어 주식처럼 거래가 가능한 증권</p></div>' : ''}
         `;
         
         container.appendChild(screen);
@@ -81,9 +225,25 @@ function handleAnswer(questionId, answerIndex) {
         scores[type] += answer.scores[type];
     }
     
-    // 다음 질문으로 이동
     const currentScreen = document.getElementById(`question${questionId}Screen`);
+
+    // 첫 번째 질문에 대한 답변 후 특별 스토리 표시
+    if (questionId === 1) {
+        const blankScreen = document.getElementById('blankScreen');
+        transitionToScreen(currentScreen, blankScreen);
+        
+        // 500ms 후에 스토리 시작
+        setTimeout(() => {
+            showPostQuestionStory(postQuestion1Script, () => {
+                // 스토리가 끝나면 두 번째 질문으로 이동
+                const nextScreen = document.getElementById(`question${questionId + 1}Screen`);
+                transitionToScreen(blankScreen, nextScreen);
+            });
+        }, 500);
+        return; // 여기서 함수 종료
+    }
     
+    // 다음 질문으로 이동
     if (questionId < questions.length) {
         const nextScreen = document.getElementById(`question${questionId + 1}Screen`);
         transitionToScreen(currentScreen, nextScreen);
@@ -271,16 +431,12 @@ function showResult() {
 
 // 테스트 재시작
 function resetTest() {
-    scores = {
-        안정형: 0,
-        균형형: 0,
-        공격형: 0,
-        장기형: 0,
-        단타형: 0,
-        감정형: 0,
-        분석형: 0
-    };
+    // 점수 초기화
+    for (let key in scores) {
+        scores[key] = 0;
+    }
     currentQuestion = 0;
+    currentStoryIndex = 0; // 스토리 인덱스 초기화
     
     const currentScreen = document.querySelector('.screen.active');
     const startScreen = document.getElementById('startScreen');
@@ -290,6 +446,85 @@ function resetTest() {
 }
 
 // 초기화
+// 텍스트 타이핑 효과 함수
+function typeWriter(element, text, speed, callback) {
+    let i = 0;
+    element.innerHTML = "";
+    isTyping = true;
+    document.getElementById('nextArrow').style.display = 'none'; // 화살표 숨기기
+
+    function typing() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            typingTimeout = setTimeout(typing, speed);
+        } else {
+            isTyping = false;
+            document.getElementById('nextArrow').style.display = 'block'; // 화살표 보이기
+            if (callback) callback();
+        }
+    }
+    typing();
+}
+
+function skipTyping(element, text) {
+    if (isTyping) {
+        clearTimeout(typingTimeout);
+        element.innerHTML = text;
+        isTyping = false;
+        document.getElementById('nextArrow').style.display = 'block'; // 화살표 보이기
+    }
+}
+
+// 다음 대화 표시 함수
+function showNextDialogue() {
+    // 이전 이미지 타이머 모두 제거
+    imageTimeoutIds.forEach(id => clearTimeout(id));
+    imageTimeoutIds = [];
+
+    if (currentStoryIndex >= storyScript.length) {
+        // 스토리가 끝나면 질문 화면으로 넘어감 (예시)
+        const blankScreen = document.getElementById('blankScreen');
+        const firstQuestion = document.getElementById('question1Screen');
+        transitionToScreen(blankScreen, firstQuestion);
+        return;
+    }
+
+    const dialogue = storyScript[currentStoryIndex];
+    const dialogueText = document.getElementById('dialogueText');
+    const characterName = document.getElementById('characterName');
+    const imageContainer = document.getElementById('character-images');
+
+    // 이전 이미지 모두 제거
+    imageContainer.innerHTML = '';
+
+    if (dialogue.images && dialogue.images.length > 0) {
+        let totalDelay = 0;
+        dialogue.images.forEach((imageData, index) => {
+            const timeoutId = setTimeout(() => {
+                const img = document.createElement('img');
+                img.src = imageData.src;
+                img.className = `character-image ${imageData.position}`;
+
+                if (imageData.width) img.style.width = imageData.width;
+                if (imageData.height) img.style.height = imageData.height;
+                
+                imageContainer.appendChild(img);
+
+                setTimeout(() => img.classList.add('show'), 10);
+
+            }, totalDelay);
+
+            imageTimeoutIds.push(timeoutId);
+            totalDelay += (imageData.delay || 0);
+        });
+    }
+    characterName.innerText = dialogue.speaker;
+    typeWriter(dialogueText, dialogue.line, 50);
+
+    currentStoryIndex++;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // 질문 화면 생성
     createQuestionScreens();
@@ -298,9 +533,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const startBtn = document.getElementById('startBtn');
     startBtn.addEventListener('click', function() {
         const startScreen = document.getElementById('startScreen');
-        const firstQuestion = document.getElementById('question1Screen');
-        transitionToScreen(startScreen, firstQuestion);
+        const blankScreen = document.getElementById('blankScreen');
+        transitionToScreen(startScreen, blankScreen);
+
+        // 화면 전환 후 첫 대사 시작
+        setTimeout(showNextDialogue, 500);
     });
+
+    // 대화창 클릭/터치 이벤트
+    const dialogueBox = document.querySelector('.dialogue-box');
+    dialogueBox.addEventListener('click', handleIntroStoryClick);
     
     // 터치 디바이스 지원
     startBtn.addEventListener('touchstart', function(e) {

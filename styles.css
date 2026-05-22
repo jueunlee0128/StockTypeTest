@@ -99,6 +99,62 @@ body {
     overflow-y: hidden;
 }
 
+.dialogue-box {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 1000px;
+    height: 150px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+    border-radius: 15px;
+    padding: 20px;
+    font-size: 24px;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+.name-box {
+    position: absolute;
+    top: -20px;
+    left: 20px;
+    background-color: #3a3a3a;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 10px 10px 10px 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#dialogueText {
+    margin: 0;
+    padding: 0.5%;
+}
+
+.next-arrow {
+    display: none;
+    position: absolute;
+    bottom: 15px;
+    right: 25px;
+    width: 0;
+    height: 0;
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-top: 15px solid #333;
+    animation: bounce 0.7s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(5px);
+    }
+}
+
 .screen.active {
     display: flex;
     opacity: 1;
@@ -141,6 +197,74 @@ body {
     transform: translateY(-5px);
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
 }
+
+#character-images {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1; /* 대화 상자 뒤에 위치 */
+}
+
+.character-image {
+    position: absolute;
+    top: 50%;
+    max-height: 100%;
+    opacity: 0;
+}
+
+.character-image.left {
+    left: -50%; /* 왼쪽 밖에서 시작 */
+    transform: translateY(-50%);
+}
+
+.character-image.right {
+    right: -50%; /* 오른쪽 밖에서 시작 */
+    transform: translateY(-50%);
+}
+
+.character-image.center {
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* 애니메이션 클래스 */
+.character-image.show.left {
+    animation: fly-from-left 0.8s forwards;
+}
+
+.character-image.show.right {
+    animation: fly-from-right 0.8s forwards;
+}
+
+.character-image.show.center {
+    animation: fade-in-center 1s forwards;
+}
+
+@keyframes fly-from-left {
+    to {
+        left: 5%;
+        opacity: 1;
+        transform: translateY(-50%);
+    }
+}
+
+@keyframes fly-from-right {
+    to {
+        right: 5%;
+        opacity: 1;
+        transform: translateY(-50%);
+    }
+}
+
+@keyframes fade-in-center {
+    to {
+        opacity: 1;
+    }
+}
+
 
 .start-button:active {
     transform: translateY(-2px);
